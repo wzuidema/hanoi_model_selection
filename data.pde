@@ -7,8 +7,7 @@ void set_path() {
   end = calc_index(paths[j].substring(0,4));
 
   for (int k=0; k<81; k++) {
-    s[k].subgoal_onshortestpathp=false;
-    s[k].activep=false; }
+    s[k].clear(); }
 
   path = new String[-1+paths[j].length()/4];
   for (int i=1; i<paths[j].length()/4; i++) {

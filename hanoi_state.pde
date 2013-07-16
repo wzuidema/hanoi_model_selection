@@ -8,6 +8,7 @@ class Hanoi_state {
   int myindex;
   int knowngoal, knownmax=81, knownbest;
   boolean subgoal_onshortestpathp = false;
+  int sampledneighbour=-1;
 
   float x,y;
   float radius=10.0;
@@ -38,6 +39,12 @@ class Hanoi_state {
           neighbours[Nn] = calc_index(neighb);
           Nn++;
        }
+  }
+  
+  void clear() {
+    subgoal_onshortestpathp = false;
+    sampledneighbour=-1;
+    activep=false;
   }
   
   int flip_triangle(int curr, int head_direction) {
@@ -121,6 +128,14 @@ class Hanoi_state {
  
  void draw_lines_to_neighbours() {
    for (int i=0; i<Nn; i++) {
+     if (i==sampledneighbour) {
+       strokeWeight(4);
+       stroke(128,256,256);
+     }
+     else {
+       strokeWeight(1);
+       stroke(256,256,256);
+     }
      line(x,y,s[neighbours[i]].x,s[neighbours[i]].y);
    }
  } 
@@ -138,11 +153,11 @@ class Hanoi_state {
    float cumulative=0.0;
    int selected=0;
    for (int i=0; i<Nn; i++) {
-    cumulative+=llrandom(neighbours[i]);
+    cumulative+=exp(llrandom(neighbours[i]));
     if (uniform<cumulative) { selected=i; break; }
    }
    fill(128,256,256);
-   line(x,y,s[neighbours[selected]].x,s[neighbours[selected]].y);
+   sampledneighbour=selected;
    s[neighbours[selected]].sample_random_path(len-1);
  }
  

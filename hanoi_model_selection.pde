@@ -9,7 +9,7 @@ int num_paths=0;
 
 boolean clickp=false, newitemp=true, subgoalanalysisp=false;
 
-String url = "hanoi-data.csv"; // http://www.illc.uva.nl/LaCo/webexperiment.nl/, hanoi-katja-corrected-cleaned.csv
+String url = "http://www.illc.uva.nl/LaCo/webexperiment.nl/hanoi-data.csv"; // http://www.illc.uva.nl/LaCo/webexperiment.nl/, hanoi-katja-corrected-cleaned.csv
 String names[]; 
 String path[], datalines[], paths[];
 /* = {
@@ -151,7 +151,7 @@ void keyPressed() {
   else if (key=='s' || key=='S') saveFrame("toh-######.png");
   else if (key=='g' || key=='G') subgoalanalysisp=true;
   else if (key=='x' || key=='X') subgoalanalysisp=false;
-  else if (key=='1') state[start].sample_random_path();
+  else if (key=='1') s[start].sample_random_path(path.length);
   else { j++; }
 //  j=j%huizinga.length;
   if (j<0) j=num_paths+j;
