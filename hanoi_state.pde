@@ -129,7 +129,7 @@ class Hanoi_state {
  void draw_lines_to_neighbours() {
    for (int i=0; i<Nn; i++) {
      if (i==sampledneighbour) {
-       strokeWeight(4);
+       strokeWeight(5);
        stroke(128,256,256);
      }
      else {
@@ -138,6 +138,7 @@ class Hanoi_state {
      }
      line(x,y,s[neighbours[i]].x,s[neighbours[i]].y);
    }
+   strokeWeight(1);
  } 
  
  void draw_shortest_path_to(int goal) {

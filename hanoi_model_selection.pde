@@ -9,7 +9,7 @@ int num_paths=0;
 
 boolean clickp=false, newitemp=true, subgoalanalysisp=false;
 
-String url = "http://www.illc.uva.nl/LaCo/webexperiment.nl/hanoi-data.csv"; // http://www.illc.uva.nl/LaCo/webexperiment.nl/, hanoi-katja-corrected-cleaned.csv
+String url = "hanoi-data.csv"; // http://www.illc.uva.nl/LaCo/webexperiment.nl/, hanoi-katja-corrected-cleaned.csv
 String names[]; 
 String path[], datalines[], paths[];
 /* = {
@@ -25,7 +25,7 @@ String path[], datalines[], paths[];
 "00000022202221221122110221022002000200011001120122012211021101111111",
 "21002111201100110021102112212221222002200120112011002100"}; */
 
-String huizinga[] = {"01222222","22000000", // trial runs
+String huizinga[] = {//"01222222","22000000", // trial runs
                      "00011111","20121200","11121111",
                      "10222210","11021111","01220211",
                      "11221111","20112100","00220000",
