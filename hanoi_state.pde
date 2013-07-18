@@ -147,18 +147,19 @@ class Hanoi_state {
    s[knownbest].draw_shortest_path_to(goal);
  }
  
- void sample_random_path(int len) {
+ void sample_random_path(int len, int strategy) {
    if (len<1) return;
    float uniform = random(0.0,1.0);
    float cumulative=0.0;
    int selected=0;
    for (int i=0; i<Nn; i++) {
-    cumulative+=exp(llrandom(neighbours[i]));
+     if (strategy==1) cumulative+=exp(llrandom(neighbours[i]));
+     if (strategy==2) cumulative+=exp(lloptimal(neighbours[i]));
     if (uniform<cumulative) { selected=i; break; }
    }
    fill(128,256,256);
    sampledneighbour=selected;
-   s[neighbours[selected]].sample_random_path(len-1);
+   s[neighbours[selected]].sample_random_path(len-1,strategy);
  }
  
   int shortest_distance_to(int goal) {

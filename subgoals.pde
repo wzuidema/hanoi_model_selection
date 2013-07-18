@@ -99,4 +99,50 @@ float calculatePHH(String previous, String current, String observable) {
   
 }
 
+ void sample_subgoal_path(int len) {
+   String hidden = "start/end", observable=s[start].name; 
+   float uniform;
+   float cumulativeH=0.0, cumulativeO=0.0;
+   int selectedH=0, selectedO=0;
+   Hanoi_state thestate = s[start];
+   
+   // select a first subgoal from the subgoal list
+   uniform=random(0.0,1.0);
+   for (int i=0; i<candidate_subgoals.size(); i++) {
+      cumulativeH+=exp(calculatePHH(hidden,candidate_subgoals.get(i),observable));
+      if (uniform<cumulativeH) { selectedH=i; break; }
+   }
+   hidden = candidate_subgoals.get(selectedH);
+   
+   for (int l=0; l<len; l++) {
+     // select the next state from neighbours of current state based on current subgoal P(Ot | Ht, Ot-1)
+     // *** note: need to reset state space with current subgoal ***
+     cumulativeO = 0.0;
+     uniform=random(0.0,1.0);
+     int subgoal = calc_index(hidden);
+     s[subgoal].percolate_shortest_path(subgoal);
+     for (int i=0; i<thestate.Nn; i++) {
+       cumulativeO+=exp(calculatePOH(thestate.name+s[thestate.neighbours[i]].name,hidden));
+       if (uniform<cumulativeO) { selectedO=i; break; }
+     }
+     observable = thestate.name+s[thestate.neighbours[selectedO]].name;
+     thestate.sampledneighbour=selectedO;
+     thestate = s[thestate.neighbours[selectedO]];
+
+     
+     // select the next subgoal from possible subgoals based on current subgoal and current state P(Ht+1 | Ht, Ot)
+     cumulativeH = 0.0;
+     uniform=random(0.0,1.0);
+     for (int i=0; i<candidate_subgoals.size(); i++) {
+      cumulativeH+=exp(calculatePHH(hidden,candidate_subgoals.get(i),observable));
+      if (uniform<cumulativeH) { selectedH=i; break; }
+     }
+     hidden = candidate_subgoals.get(selectedH);
+   }  
+   s[end].percolate_shortest_path(end);
+   // *** Note: funny things may happen if draw() is trying to draw a shortest path to the goal state if 
+   // the state space is temporarily calculating shortest paths to the various subgoals considered ***
+   
+ }
+
 

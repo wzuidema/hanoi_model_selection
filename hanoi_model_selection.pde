@@ -143,20 +143,30 @@ int[] copy_state(int state[]) {
 
 void keyPressed() {
 //  println("key is "+key);
+  if (key=='s' || key=='S') saveFrame("toh-######.png");
+  else if (key=='g' || key=='G') subgoalanalysisp=true;
+  else if (key=='x' || key=='X') subgoalanalysisp=false;
+  else if (key=='1') { 
+    for (int k=0; k<81; k++) s[k].sampledneighbour=-1; 
+    s[start].sample_random_path(path.length,1); }
+  else if (key=='2') { 
+    for (int k=0; k<81; k++) s[k].sampledneighbour=-1; 
+    s[start].sample_random_path(path.length,2); }
+  else if (key=='3') { 
+    for (int k=0; k<81; k++) s[k].sampledneighbour=-1; 
+    sample_subgoal_path(path.length); }
+  else {
+    // all keys that will change j
   if (key=='-' || key=='b' || key=='B') j-=1;
   else if (key=='p' || key=='P') j-=huizinga.length;
   else if (key=='n' || key=='N') j+=huizinga.length;
   else if (key=='t' || key=='T') j+=10;
   else if (key=='h' || key=='H') j+=100;
-  else if (key=='s' || key=='S') saveFrame("toh-######.png");
-  else if (key=='g' || key=='G') subgoalanalysisp=true;
-  else if (key=='x' || key=='X') subgoalanalysisp=false;
-  else if (key=='1') s[start].sample_random_path(path.length);
-  else { j++; }
-//  j=j%huizinga.length;
+  else if (key==' ') j++;
   if (j<0) j=num_paths+j;
   j=j%num_paths;
   set_path();
+  }
 }
 
 void mouseClicked() {
