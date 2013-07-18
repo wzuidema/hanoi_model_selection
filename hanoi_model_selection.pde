@@ -70,6 +70,24 @@ void setup()
   //noLoop();
 }
 
+void print_likelihoods()
+{
+  noLoop();
+  int currentj = j;
+  
+  PrintWriter output = createWriter("likelihoods.csv"); 
+  for (j=0; j<num_paths; j++) {
+   set_path(); 
+   output.println(names[j%num_paths]+
+     ", Path length, "+(paths[j].length()/4-2)+", Minimum, "+s[start].shortest_distance_to(end)+ 
+     ", LogLik-random, "+llrandom()+", LogLik-optimal, "+lloptimal()+", LogLik-subgoal, "+analysis.likelihood());
+  }
+  output.flush();  // Writes the remaining data to the file
+  output.close();  // Finishes the file
+  loop();
+  j = currentj;
+}
+
 void draw()
 {
     background(51); 
@@ -81,7 +99,7 @@ void draw()
   }
   else {
 
-  if (millis()<1000) {
+  if (millis()<2000) {
     text("Use space and - (or n,p,t,h) to browse through data.",40,100);
     text("Data downloaded from " +url+"; looks like: ",40,300);
     for (int i=0; i<num_paths; i++)
@@ -155,6 +173,9 @@ void keyPressed() {
   else if (key=='3') { 
     for (int k=0; k<81; k++) s[k].sampledneighbour=-1; 
     sample_subgoal_path(path.length); }
+  else if (key=='$') { 
+    for (int k=0; k<81; k++) s[k].sampledneighbour=-1; 
+    print_likelihoods(); }
   else {
     // all keys that will change j
   if (key=='-' || key=='b' || key=='B') j-=1;
