@@ -1,25 +1,43 @@
-ArrayList<String> candidate_subgoals; 
+  ArrayList<String> candidate_subgoals; 
 
 class subgoalanalysis {
-  String[] thepath;
-  String goals[]      = {"1110","1112","1111","0000","0002","0001","2220","2222","2221"};
-  String confusions[] = {"2220","0002",null,null,"1112","2221","1110",null,"0001"};
+
+  String name;
+  String[] thepath, goals, confusions;
+  String size3pyramids_goals[]      = {"1110","1112","1111","0000","0002","0001","2220","2222","2221"};
+  String size3pyramids_confusions[] = {"2220","0002","","","1112","2221","1110","","0001"};
+  String size2pyramids_goals[]      = {"1110","1112","1111","0000","0002","0001","2220","2222","2221",
+                                       "1120","1122","1121","0010","0012","0011","2210","2212","2211",
+                                       "1100","1102","1101","0020","0022","0021","2200","2202","2201"};
+  String size2pyramids_confusions[] = {  "",  "",  "",  "",  "",  "",  "",  "",  "",
+                                       "0020","0022","0021","2210","2212","2211","0010","0012","0011",
+                                       "2200","2202","2201","1120","1122","1121","1100","1102","1101"};
   boolean[] onshortestpath;
+  trellis thetrellis;
   
-  subgoalanalysis() {
-    
+  subgoalanalysis(String typeOfAnalysis) {
+    name = typeOfAnalysis;
+    if (typeOfAnalysis.equals("size3pyramids")) {
+      goals = size3pyramids_goals;
+      confusions = size3pyramids_confusions;
+    }
+    if (typeOfAnalysis.equals("size2pyramids")) {
+      goals = size2pyramids_goals;
+      confusions = size2pyramids_confusions;
+    }
   //  println("Nice one!\n");
   }
   
   void performsubgoalanalysis() {
+    noLoop();
     ArrayList<Integer> shortest_path;
     ArrayList<String> subgoal_sequence;
-    ArrayList<Integer> subgoal_sequence_indices;
+//    ArrayList<Integer> subgoal_sequence_indices;
     ArrayList<String> confusion_sequence;
 
     shortest_path = s[start].shortest_path_to(end);
     subgoal_sequence = new ArrayList<String>();
-    subgoal_sequence_indices = new ArrayList<Integer>();
+//    subgoal_sequence_indices = new ArrayList<Integer>();
     confusion_sequence = new ArrayList<String>();
     
     // create sequence of subgoals and confusions
@@ -28,12 +46,14 @@ class subgoalanalysis {
       for (int k=0; k<goals.length; k++) {
         if (goals[k].equals(s[shortest_path.get(i)].name)) {
           s[shortest_path.get(i)].subgoal_onshortestpathp=true; // for diplay purposes
-          if (confusions[k]!=null) s[calc_index(confusions[k])].subgoal_onshortestpathp=true; // for diplay purposes
+          if (!confusions[k].equals("")) s[calc_index(confusions[k])].subgoal_onshortestpathp=true; // for diplay purposes
           subgoal_sequence.add(goals[k]);        // add state to list of subgoals
-          subgoal_sequence_indices.add(shortest_path.get(i));
-          if (confusions[k]!=null) confusion_sequence.add(confusions[k]); // add confusion to list of confusions
-          subgoal_sequence_indices.add(calc_index(confusions[k]));
-           }
+//          subgoal_sequence_indices.add(shortest_path.get(i));
+          if (!confusions[k].equals("")) {
+             confusion_sequence.add(confusions[k]); // add confusion to list of confusions
+//             subgoal_sequence_indices.add(calc_index(confusions[k]));
+          }
+        }
       }
     }
     
@@ -47,19 +67,22 @@ class subgoalanalysis {
     candidate_subgoals = new ArrayList<String>();
     candidate_subgoals.addAll(subgoal_sequence);
     candidate_subgoals.addAll(confusion_sequence);
-    
+   
     thetrellis = new trellis(thepath,candidate_subgoals);
     for (int g=0; g<candidate_subgoals.size(); g++) {
       int subgoal = calc_index(candidate_subgoals.get(g));
       s[subgoal].percolate_shortest_path(subgoal);
       thetrellis.recalculatePOHs(g);
-    }
 
     // reset state-space and determine features of subgoals for calculating PHH 
     s[end].percolate_shortest_path(end);
     
     thetrellis.forwardpass();
     thetrellis.backwardpass();
+    
+  }
+    loop();
+   
   }
 
   float likelihood() {

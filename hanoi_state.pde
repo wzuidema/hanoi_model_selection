@@ -206,11 +206,11 @@ class Hanoi_state {
     return false;
   }
 
-  float Premain=0.009;
-  float Pillegal=0.001;
-  float Plegal=0.99;
+  float Premain=0.00005;
+  float Pillegal=0.00005;
+  float Plegal=0.9999;
   float Poptimal=0.9;
-  float Pmistake=0.09;
+  float Pmistake=0.0999;
 
   float llrandom(int nextstate) {
     // calculate likelihood of transitioning to nextstate under the random model

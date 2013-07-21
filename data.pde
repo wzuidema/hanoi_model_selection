@@ -16,6 +16,7 @@ void set_path() {
   }
   
   analysis.performsubgoalanalysis();
+  analysis2.performsubgoalanalysis();
   // (assumes path variable is set)
 }
 

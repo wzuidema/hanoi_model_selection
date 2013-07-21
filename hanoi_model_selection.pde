@@ -42,8 +42,7 @@ boolean elementp(String[] thesuperset, String thesubset) {
     if (thesubset.equals(thesuperset[i])) return true;
   return false; }
 
-trellis thetrellis;
-subgoalanalysis analysis;
+subgoalanalysis analysis, analysis2;
 
 void setup() 
 {
@@ -64,9 +63,12 @@ void setup()
   
   read_datalines();
 
-  analysis = new subgoalanalysis();
+  analysis = new subgoalanalysis("size2pyramids");
+  analysis2 = new subgoalanalysis("size3pyramids");
   
   set_path(); 
+  
+  println(calc_index("0011"));
   //noLoop();
 }
 
@@ -80,7 +82,9 @@ void print_likelihoods()
    set_path(); 
    output.println(names[j%num_paths]+
      ", Path length, "+(paths[j].length()/4-2)+", Minimum, "+s[start].shortest_distance_to(end)+ 
-     ", LogLik-random, "+llrandom()+", LogLik-optimal, "+lloptimal()+", LogLik-subgoal, "+analysis.likelihood());
+     ", LogLik-random, "+llrandom()+", LogLik-optimal, "+lloptimal()
+         +"; LogLik-"+analysis.name+"="+analysis.likelihood()
+         +"; LogLik-"+analysis2.name+"="+analysis2.likelihood());
   }
   output.flush();  // Writes the remaining data to the file
   output.close();  // Finishes the file
@@ -94,7 +98,7 @@ void draw()
 
   if (subgoalanalysisp) {
     textFont(font8);
-    thetrellis.display(105,40,75,75);
+    analysis2.thetrellis.display(105,40,75,75);
     textFont(font12);
   }
   else {
@@ -126,7 +130,8 @@ void draw()
 
     text("Path length="+(paths[j].length()/4-2)+",Minimum="+s[start].shortest_distance_to(end),50,670); 
     text("LogLik-random="+llrandom()+"; LogLik-optimal="+lloptimal()
-    +"; LogLik-subgoal="+analysis.likelihood()
+    +"; LogLik-"+analysis.name+"="+analysis.likelihood()
+    +"; LogLik-"+analysis2.name+"="+analysis2.likelihood()
     ,50,630);
     strokeWeight(1);
   }
