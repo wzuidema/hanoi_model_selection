@@ -1,4 +1,4 @@
-  ArrayList<String> candidate_subgoals; 
+ArrayList<String> candidate_subgoals; 
 
 class subgoalanalysis {
 
@@ -65,8 +65,17 @@ class subgoalanalysis {
 
     // create the trellis, and recalculate POH for every subgoal
     candidate_subgoals = new ArrayList<String>();
-    candidate_subgoals.addAll(subgoal_sequence);
-    candidate_subgoals.addAll(confusion_sequence);
+ 
+ // Add subgoals to candidate_subgoals after checking their uniqueness
+    for (String sg : subgoal_sequence) {
+      if( !candidate_subgoals.contains( sg )) {
+        candidate_subgoals.add( sg ); }}
+    for (String sg : confusion_sequence) {
+      if( !candidate_subgoals.contains( sg )) {
+        candidate_subgoals.add( sg ); }}
+ 
+//    candidate_subgoals.addAll(subgoal_sequence);
+//    candidate_subgoals.addAll(confusion_sequence);
    
     thetrellis = new trellis(thepath,candidate_subgoals);
     for (int g=0; g<candidate_subgoals.size(); g++) {

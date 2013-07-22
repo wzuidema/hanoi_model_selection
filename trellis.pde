@@ -7,6 +7,7 @@
 // each H_t,i it further builds a list possible previous states H_t-1,i
 // along with an aggregate probability (Viterbi or inside).
 
+// Caution: the list of hidden states ("thegoals") must not contain duplicates
 
 class trellis {
   String[] path;
@@ -66,13 +67,14 @@ class trellis {
 class htset {
   ArrayList<trellisH> hiddens;
   
-  htset(ArrayList<String> thegoals,trellisO observable) {
+  htset(ArrayList<String> hiddennames,trellisO observable) {
     hiddens = new ArrayList<trellisH>();
-    for (int i=0; i<thegoals.size(); i++) {
-      trellisH Hti = new trellisH(thegoals.get(i),observable);
-      hiddens.add(Hti);
+ 
+    for (int i=0; i<hiddennames.size(); i++) {
+        trellisH Hti = new trellisH(hiddennames.get(i),observable);
+        hiddens.add(Hti);
     }
-  } 
+  }
 
   void recalculatePOH(int hiddenIndex) {
     hiddens.get(hiddenIndex).setPOH();
