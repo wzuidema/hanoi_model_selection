@@ -9,10 +9,14 @@ void set_path() {
   for (int k=0; k<81; k++) {
     s[k].clear(); }
 
+  int current, previous=-1;
   path = new String[-1+paths[j].length()/4];
   for (int i=1; i<paths[j].length()/4; i++) {
     path[i-1] = new String(paths[j].substring(i*4,4+i*4));
-    s[calc_index(path[i-1])].activep=true;
+    current = calc_index(path[i-1]);
+    s[current].previousonpath = previous;
+    s[current].activep=true;
+    previous = current;
   }
   
   analysis.performsubgoalanalysis();

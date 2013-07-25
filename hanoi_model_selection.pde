@@ -112,6 +112,9 @@ void draw()
 
   for (int i=0; i<81; i++)
    s[i].display(); 
+
+  for (int k=1; k<path.length; k++) 
+    s[calc_index(path[k])].draw_path_to_neighbour(s[calc_index(path[k-1])]);
   stroke(0);   
   
   fill(256,256,256);

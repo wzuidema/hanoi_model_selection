@@ -8,7 +8,7 @@ class Hanoi_state {
   int myindex;
   int knowngoal, knownmax=81, knownbest;
   boolean subgoal_onshortestpathp = false;
-  int sampledneighbour=-1;
+  int sampledneighbour=-1, previousonpath=-1;
 
   float x,y;
   float radius=10.0;
@@ -44,6 +44,7 @@ class Hanoi_state {
   void clear() {
     subgoal_onshortestpathp = false;
     sampledneighbour=-1;
+    previousonpath=-1;
     activep=false;
   }
   
@@ -132,6 +133,11 @@ class Hanoi_state {
        strokeWeight(5);
        stroke(128,256,256);
      }
+//     else if (activep && (previousonpath==neighbours[i] || 
+//         myindex==s[neighbours[i]].previousonpath)) {
+//       strokeWeight(5);
+//       stroke(256,0,0);
+//     }
      else {
        strokeWeight(1);
        stroke(256,256,256);
@@ -140,6 +146,12 @@ class Hanoi_state {
    }
    strokeWeight(1);
  } 
+
+ void draw_path_to_neighbour(Hanoi_state theneighbour) {
+   strokeWeight(5);
+   stroke(256,0,0);
+   line(x,y,theneighbour.x,theneighbour.y);
+ }
  
  void draw_shortest_path_to(int goal) {
    if (myindex==goal) return;
